@@ -89,7 +89,7 @@ var overtooning = {
             _APPLY:             'Apply'
         },
         template: [],
-        
+
         exec: function(func, property) {
             if(property) {
                 if(!property.join) {
@@ -106,7 +106,7 @@ var overtooning = {
             var data = localStorage.getItem('overtooning.' + property);
             if(data && (data = JSON.parse(data))) {
                 this[property] = data;
-            }  
+            }
         },
         save: function(property) {
             if(this[property]) {
@@ -245,7 +245,7 @@ var overtooning = {
         internalWebtoonId: -1,
         observer: [],
         forceRaw: false //Cheese-like compromize
-    },        
+    },
 
     menu: {
         close: function() {
@@ -285,7 +285,7 @@ var overtooning = {
                     className: 'otoon-col otoon-button otoon-rough' + (category == 'rough' ? ' otoon-active':''),
                     textContent: overtooning.storage.text._ROUGH, onclick: overtooning.menu.rough})
             ));
-            
+
             if(element) {
                 element.className = 'otoon-col';
                 overtooning.jar.menu.container.appendChild(overtooning.create('div', {className: 'otoon-row otoon-body'}, element));
@@ -306,7 +306,7 @@ var overtooning = {
         },
         setting: function() {
             var settings = overtooning.create('div', {});
-            
+
             settings.appendChild(overtooning.create('div', {className: 'otoon-row'},
                 overtooning.create('span', {className: 'otoon-col otoon-option-name', textContent: overtooning.storage.text._SETTING_LAZYLOAD}),
                 overtooning.create('span', {className: 'otoon-col otoon-option-value'},
@@ -389,9 +389,9 @@ var overtooning = {
                 ),
                 overtooning.create('span', {className: 'otoon-col otoon-info', textContent: overtooning.storage.text._SETTING_RESET_I})
             ));
-            
+
             overtooning.menu.console(settings, 'general');
-            
+
             document.getElementById(overtooning.storage.config.lazyLoading ? 'otoon-lazyload-y' : 'otoon-lazyload-n').checked = true;
             document.getElementById(overtooning.storage.config.disable ? 'otoon-disable-y' : 'otoon-disable-n').checked = true;
         },
@@ -428,7 +428,7 @@ var overtooning = {
             overtooning.menu.console(rough, 'rough');
         }
     },
-    
+
     lang: function() {
         var lang = [];
         for(var i = overtooning.storage.feed.length -1; i > -1; i--) {
@@ -442,7 +442,7 @@ var overtooning = {
         }
         return lang;
     },
-    
+
     mutation: function(MutationRecord) {
         var observerId = -1, targetElement = MutationRecord[0].target;
         for(var i = overtooning.jar.observer.length -1; i > -1; i--) {
@@ -459,14 +459,15 @@ var overtooning = {
             overtooning.jar.observer[observerId].observer.observe(overtooning.jar.observer[observerId].target, overtooning.jar.observer[observerId].options);
         }
     },
-    
+
     run: function() {
+        console.log("worked");
         if (window.top !== window.self || window.frameElement) {
             return;
         }
-        
+
         overtooning.storage.exec('load');
-        
+
         if(!overtooning.jar.run.stylesheet) {
             overtooning.jar.run.stylesheet = overtooning.create('style', {});
             overtooning.jar.run.stylesheet.textContent = overtooning.getBaseCss();
@@ -475,7 +476,7 @@ var overtooning = {
         if(!overtooning.jar.run.stylesheet.parentNode) {
             document.body.appendChild(overtooning.jar.run.stylesheet);
         }
-        
+
         if(!overtooning.storage.template || !overtooning.storage.template.length) {
             //legacy localStorage variables
             localStorage.removeItem('doongeFeeds');
@@ -516,23 +517,23 @@ var overtooning = {
                     }
                 }
             }
-            
+
             overtooning.storage.template = [];
             if(priorityTemplate.length) {
                 overtooning.runTemplate(priorityTemplate);
                 priorityTemplate = [];
             }
-            
+
             if(!overtooning.jar.node.value('overtooning')) {
                 overtooning.addLog('[overtooning.run] Could not bootstrap - correct template?');
                 overtooning.menu.log();
             }
-            
+
             if(overtooning.storage.config.disable) {
                  overtooning.addLog('[overtooning.run] User has disabled Overtooning on this website.');
                 return false;
             }
-            
+
             var webtoonId = false;
             if(webtoonId = overtooning.jar.node.value('webtoonId')) {
                  for(var i = overtooning.storage.webtoon.length -1; i > -1; i--) {
@@ -544,8 +545,8 @@ var overtooning = {
                     }
                 }
             }
-            
-          
+
+
             //*// Cheese in the Trap exception
             var forceWebtoonId = window.location.hash.match(new RegExp('^#otoon=([0-9a-zA-Z_-]+)$'));
             if(forceWebtoonId) {
@@ -557,7 +558,7 @@ var overtooning = {
                 };
             }
             //*/
-            
+
             overtooning.jar.run.template.sort(function(a, b) {return ( ( a.path == b.path ) ? 0 : ( ( a.path > b.path ) ? 1 : -1 ) );});
             //populate wait and observers queues (overtooning.jar.run.wait and overtooning.jar.run.observe).
             overtooning.jar.run.wait = [];
@@ -633,7 +634,7 @@ var overtooning = {
         overtooning.jar.rawImage.onerror = overtooning.rawImageOnError;
         overtooning.jar.overlay.onload = overtooning.overlayOnLoad;
         overtooning.jar.overlay.onerror = overtooning.overlayOnError;
-        
+
         overtooning.runTemplate(overtooning.jar.run.template);
         overtooning.addLog('[overtooning.template] End.');
 
@@ -655,7 +656,7 @@ var overtooning = {
         if(overtooning.jar.query) {
             overtooning.query();
         }
-        
+
         overtooning.addLog('[overtooning.run] End.');
         //overtooning.menu.console();
     },
@@ -801,7 +802,7 @@ var overtooning = {
             overtooning.loadImage();
         }
     },
-    
+
     webtoonList: function(node, args) {
         if(args && args.innerPath && args.innerPath.webtoonId) {
             var webtoonId = overtooning.fetch(args.innerPath.webtoonId, node, true),
@@ -824,11 +825,11 @@ var overtooning = {
                     }
                 }
                 return true;
-            }    
+            }
         }
         return false;
     },
-    
+
     chapterList: function(node, args) {
         if(args && args.innerPath && args.innerPath.chapterId && overtooning.jar.chapterList) { // args chapterList is to be added on CORS request
             var chapterId = overtooning.fetch(args.innerPath.chapterId, node, true),
@@ -850,11 +851,11 @@ var overtooning = {
         }
         return false;
     },
-    
+
     imageList: function(node, args) {
         var index = -1,
             src = false;
-        
+
         for(var i = overtooning.jar.canvas.length -1; i > -1; i--) {
             if(overtooning.jar.canvas[i].ref == node) {
                 index = i;
@@ -877,7 +878,7 @@ var overtooning = {
                 node.src = overtooning.jar.pixel;
             }
         }
-        
+
         if(!overtooning.jar.canvas[index].activeNode) {
             overtooning.jar.canvas[index].activeNode = overtooning.jar.canvas[index].ref
         }
@@ -886,7 +887,7 @@ var overtooning = {
         //more intricate way to calculate imageNumber (distord or depending on page node) here.
         overtooning.jar.canvas[index].item = args.item;
     },
-    
+
     loadImage: function() {
         if(overtooning.jar.timer) {
             window.clearTimeout(overtooning.jar.timer);
@@ -898,7 +899,7 @@ var overtooning = {
         var workToDo = false, fullyLoaded = true;
         for(var i = 0; i < overtooning.jar.canvas.length; i++) {
             if(!overtooning.jar.canvas[i].loaded) {
-                if( overtooning.jar.canvas[i].ref.src == overtooning.jar.pixel || 
+                if( overtooning.jar.canvas[i].ref.src == overtooning.jar.pixel ||
                     overtooning.jar.canvas[i].ref.src == ('data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20width="'+overtooning.jar.canvas[i].width+'"%20height="'+overtooning.jar.canvas[i].height+'"></svg>') || overtooning.jar.canvas[i].ref.src == overtooning.jar.canvas[i].src) {
                     overtooning.jar.currentImage = i;
                     workToDo = true;
@@ -950,7 +951,7 @@ var overtooning = {
         overtooning.jar.busy = true;
         overtooning.jar.rawImage.src = overtooning.jar.canvas[overtooning.jar.currentImage].src;
     },
-    
+
     rawImageOnLoad: function() {
         var pointer = overtooning.jar.canvas[overtooning.jar.currentImage];
         if(pointer.ref.src != overtooning.jar.rawImage.src) { //our lazyloading or their
@@ -963,18 +964,18 @@ var overtooning = {
             overtooning.addLog('[overtooning.canvas] still loading...');
             window.setTimeout(overtooning.jar.rawImage.onload, 100);
             return;
-        } 
+        }
         pointer.loaded = true;
         if(pointer.attribute) { // their lazyloading, let's break it.
             pointer.ref.removeAttribute(pointer.attribute);
             delete pointer.attribute;
         }
-        
+
         pointer.width = overtooning.jar.rawImage.naturalWidth;
         pointer.height = overtooning.jar.rawImage.naturalHeight;
         pointer.ref.width = overtooning.jar.rawImage.naturalWidth;
         pointer.ref.height = overtooning.jar.rawImage.naturalHeight;
-        
+
         var mgpxl = overtooning.jar.rawImage.naturalWidth * overtooning.jar.rawImage.naturalHeight;
         if (mgpxl > overtooning.jar.maxDimension) {
             overtooning.jar.maxDimension = mgpxl;
@@ -993,7 +994,7 @@ var overtooning = {
             window.setTimeout(overtooning.assign.imageList, 200);
         }
     },
-    
+
     rawImageOnError: function() {
         overtooning.addLog('[overtooning.canvas] Error while loading image ' + overtooning.jar.canvas[overtooning.jar.currentImage].item);
         overtooning.jar.canvas[overtooning.jar.currentImage].ref.src = this.src;
@@ -1003,7 +1004,7 @@ var overtooning = {
             window.setTimeout(overtooning.assign.imageList, 200);
         }
     },
-    
+
     overlayOnLoad: function() {
         var pointer = overtooning.jar.canvas[overtooning.jar.currentImage];
         overtooning.addLog('[overtooning.canvas] Loading overlay ' + pointer.item);
@@ -1040,7 +1041,7 @@ var overtooning = {
             }
             dim[mode] = increment;
             cursor[mode] = start;
-            
+
             naturalCanvas = overtooning.create('canvas', {
                 width: dim.width, height: dim.height/*,
                 style: 'position: absolute; top: ' + cursor.height + 'px; left: '+ cursor.width +'px;'*/
@@ -1055,7 +1056,7 @@ var overtooning = {
                 cursor.width, cursor.height,
                 dim.width, dim.height, 0, 0, dim.width, dim.height
             );
-            
+
             if(/*pointer.activeNode.clientHeight != pointer.height ||*/ overtooning.jar.pixelRatio != 1) {
                 /*var heightMod = pointer.activeNode.clientHeight / pointer.height;
                 var widthMod = pointer.activeNode.clientWidth / pointer.width;*/
@@ -1075,12 +1076,12 @@ var overtooning = {
                 naturalCanvas = copyCanvas;
                 copyCanvas = null;
             }
-            
+
             pointer.node.appendChild(naturalCanvas);
             overtooning.addLog('[overtooning.canvas] canvas added ' + dim.width + 'x' + dim.height);
             start += increment;
         }
-        
+
         pointer.node.appendChild(overtooning.create('div', {style: 'position: absolute; top:0; left:0; width: 100%; height: 100%;'}));
         //free some memory maybe.
         pointer.ref.src = 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20width="'+pointer.width+'"%20height="'+pointer.height+'"></svg>';
@@ -1098,7 +1099,7 @@ var overtooning = {
             window.setTimeout(overtooning.assign.imageList, 200);
         }
     },
-    
+
     overlayOnError: function() {
         overtooning.addLog('[overtooning.canvas] Error while loading overlay ' + overtooning.jar.canvas[overtooning.jar.currentImage].item);
         overtooning.jar.busy = false;
@@ -1106,7 +1107,7 @@ var overtooning = {
             window.setTimeout(overtooning.assign.imageList, 200);
         }
     },
-    
+
     runTemplate: function(template) {
         if(!template || !template.length) {
             return false;
@@ -1128,7 +1129,7 @@ var overtooning = {
         }
         template = [];
     },
-    
+
     next: function(node, nextArray) {
         if(node && nextArray && nextArray[0]) {
             var saveNode = node;
@@ -1142,11 +1143,11 @@ var overtooning = {
         }
         return false;
     },
-    
+
     pivot: function(element, array, comparer, start, end) {
         if(array.length === 0)
             return -1;
-        
+
         start = start || 0;
         end = end || array.length;
         var pivot = (start + end) >> 1,
@@ -1213,7 +1214,7 @@ var overtooning = {
         }
         return node;
     },
-    
+
     translate: function(node, data) {
         if(!node || !data.translate) {
             return false;
@@ -1245,7 +1246,7 @@ var overtooning = {
             }
         }
     },
-    
+
     query: function(data) {
         if(data) {
             var query = overtooning.jar.query.shift();
@@ -1279,7 +1280,7 @@ var overtooning = {
                             if(data.template[index].html[path].next && !data.template[index].html[path].next.join) {
                                 data.template[index].html[path].next = [data.template[index].html[path].next];
                             }
-                            
+
                             //fix short hand brackets in path and innerPath.
                             var newPath = overtooning.openBrackets(data.template[index].html[path].path, data.template[index].html[path].next);
                             if(newPath.next) {
@@ -1292,7 +1293,7 @@ var overtooning = {
                                 }
                             }
                             data.template[index].html[path].path = newPath.path;
-                            
+
                             if(data.template[index].html[path].innerPath) {
                                 for(var property in data.template[index].html[path].innerPath) {
                                     if(/^(webtoon|chapter)/.test(property)) {
@@ -1301,7 +1302,7 @@ var overtooning = {
                                     }
                                 }
                             }
-                                                        
+
                             //fix dictionary data into the template
                             if(data.text && data.template[index].html[path].translate) {
                                 if(data.template[index].html[path].translate.join) {
@@ -1344,7 +1345,7 @@ var overtooning = {
                 delete data.template;
                 delete data.text;
             }
-            
+
 
             if(data.feedName && typeof data.feedName == 'string' && data.feedName.length < 50) {
                 overtooning.storage.feed[feedId].name = data.feedName;
@@ -1368,7 +1369,7 @@ var overtooning = {
                 if(!data.add[0] || !data.add[0].id) {
                     data.add = [data.add];
                 }
-                
+
                 for(var i = data.add.length -1; i > -1; i--) {
                     if( data.add[i].id && typeof data.add[i].id == 'string' && /^[0-9a-zA-Z_\-]+$/.test(data.add[i].id) &&
                         data.add[i].title && typeof data.add[i].title == 'string' && data.add[i].title.length < 100 &&
@@ -1498,13 +1499,13 @@ var overtooning = {
                     overtooning.assign.imageList(); //hum...
                     delete data.generalUrl;
                 }
-                
+
                 for(property in data) {
                     if(typeof data[property] == 'string' && overtooning.jar.node.nodeList[property] && overtooning.jar.node.nodeList[property].length) {
                         overtooning.jar.node.value(property, data[property], property == 'webtoonBlurb' ? true : false);
                     }
                 }
-                
+
                 if(overtooning.scanlated) {
                      while(overtooning.jar.query.length && !overtooning.jar.query[0].ping) {
                         overtooning.query.shift();
@@ -1527,14 +1528,14 @@ var overtooning = {
             );
         }
     },
-    
+
     forceRaw: function(raw) { //To be deprecated once webtoons.com finishes Cheese in the Trap S3.
         // --------------------- DESKTOP NAVER ------------------------ //
         if(window.location.hostname == 'comic.naver.com') {
             // --------------------- chapter list ------------------------ //
             if(new RegExp('list.nhn$').test(window.location.pathname)) {
                 overtooning.jar.run.stylesheet.textContent += '.otoon-virtual {cursor: pointer; display: inline-block; padding: 4px 6px 4px 5px; border: 1px solid #FFF; font: 13px Verdana; color: #999;} .otoon-current, .otoon-virtual:hover {border: 1px solid #e0e0e0; color: #00c73c; cursor: pointer} .otoon-current {font-weight: bold;}';
-                
+
                 var navNode = overtooning.fetch('#content/div.paginate'),
                     insertChapters = 0,
                     chapterPerPage = 10;
@@ -1598,8 +1599,8 @@ var overtooning = {
                         }
                     }
                 }
-                
-                
+
+
                 overtooning.assign.imageList = overtooning.jar.saveAssignImageList;
                 overtooning.jar.saveAssignImageList = null;
                 overtooning.runTemplate([overtooning.jar.node.routineList.imageList.args]);
@@ -1625,7 +1626,7 @@ var overtooning = {
                 elClone.setAttribute('id', 'otoon_before');
                 elClone.onclick = overtooning.naverEvent.comicMoveLeft;
                 comic_before.parentNode.insertBefore(elClone, comic_before);
-                
+
                 var comic_after = document.getElementById('comic_after');
                 elClone = comic_after.cloneNode(true);
                 elClone.setAttribute('id', 'otoon_after');
@@ -1634,7 +1635,7 @@ var overtooning = {
 
                 var chapterId = parseInt(overtooning.jar.node.value('chapterId'));
                 overtooning.naverEvent.displayComicMove(chapterId);
-                
+
                 var index = -1;
                 for(var i = 0; i < overtooning.jar.chapterList.length; i++) {
                     if(overtooning.jar.chapterList[i].id == chapterId) {
@@ -1642,7 +1643,7 @@ var overtooning = {
                         break;
                     }
                 }
-                
+
                 var navURL = {
                     first: '?titleId=' + overtooning.jar.node.value('webtoonId') + '&no=1#otoon=' + overtooning.jar.chapterList[0].id,
                     last: '?titleId=' + overtooning.jar.node.value('webtoonId') + '&no=1#otoon=' + overtooning.jar.chapterList[overtooning.jar.chapterList.length -1].id,
@@ -1650,7 +1651,7 @@ var overtooning = {
                     next: index < overtooning.jar.chapterList.length -1 ? '?titleId=' + overtooning.jar.node.value('webtoonId') + '&no=1#otoon=' + overtooning.jar.chapterList[index +1].id : false
                 };
 
-               
+
                 var navBarNode = overtooning.fetch('#content/div/div.tit_area/div/div'),
                     remoconNode = overtooning.fetch('#comicRemocon/div.remote_cont/div'),
                     quickNavNode = document.getElementById('comicSequence').parentNode;
@@ -1661,7 +1662,7 @@ var overtooning = {
                 }
                 remoconNode.textContent = '';
                 quickNavNode.textContent = '';
-                
+
                 quickNavNode.appendChild(overtooning.create('input', {id: 'comicSequence', type: 'text', style: 'width: 31px;', value: index+1, onclick: function() {this.focus(); return false;}}));
                 quickNavNode.appendChild(overtooning.create('span', {textContent: ' / '}));
                 quickNavNode.appendChild(overtooning.create('span', {className: 'total', textContent: overtooning.jar.chapterList.length}));
@@ -1672,7 +1673,7 @@ var overtooning = {
                         window.location.reload();
                     }
                 }}));
-                  
+
                 if(navURL.previous) {
                     navBarNode.appendChild(
                         overtooning.create('span', {className: 'pre'},
@@ -1833,7 +1834,7 @@ var overtooning = {
             window.location = this.href;
             window.location.reload();
         },
-        
+
         chapterList: function() {
             var currentNode = overtooning.fetch('#content/div.paginate/span.otoon-current');
             if(currentNode) {
@@ -1869,9 +1870,9 @@ var overtooning = {
                     i--;
                 }
             }
-            
+
         },
-        
+
         displayComicMove: function(chapterId) {
             if(overtooning.jar.chapterList) {
                 var index = -1;
@@ -1900,7 +1901,7 @@ var overtooning = {
                 }
             }
         },
-        
+
         comicMoveLeft: function() {
             if(overtooning.jar.chapterList) {
                 var chapterId = parseInt(document.getElementById('comic_move').childNodes[7].firstChild.href.split('=').pop());
@@ -1983,7 +1984,7 @@ var overtooning = {
         }
         return {path: path, next: next};
     },
-    
+
     getBaseCss: function() {
         return '#otoon-console {'+
             'position: absolute;'+
@@ -2086,14 +2087,14 @@ var overtooning = {
                 'box-sizing: border-box;'+
                 'vertical-align:top;'+
             '}'+
-        '}';  
+        '}';
     },
-    
+
     addLog: function(stringLog) {
         if(console) console.log(stringLog);
         this.jar.log.push(stringLog);
     },
- 
+
     value: function(element, setValue, multiline) { //revamp: treewalker for textnodes?
         if(!element) {
             return false;
@@ -2135,7 +2136,7 @@ var overtooning = {
         }
         return element.nodeValue;
     },
-    
+
     digit: function (number, width, filler) {
         filler = filler || '0';
         number = number + '';
@@ -2180,7 +2181,7 @@ var overtooning = {
                 this.addLog('[overtooning.fetch] Malformed request ' + path.tag[path.current]);
                 return false
             }
-            
+
             if(pathData[1] && pathData[1][0] == '#') {
                 if(pathData[1].length < 2) {
                     this.addLog('[overtooning.fetch] Illegal ID # at ' + path.tag[path.current]);
@@ -2245,7 +2246,7 @@ var overtooning = {
                     this.addLog('[overtooning.fetch] No qualifier at ' + path.tag[path.current]);
                     return false
                 }
-               
+
                 var found = false;
                 while(node && !found) {
                     found = true;
@@ -2255,7 +2256,7 @@ var overtooning = {
                             found = compare[cursor].value-- <= 0;
                             break;
                             case 'nodeName':
-                            found = node.nodeName.toLowerCase() == compare[cursor].value; 
+                            found = node.nodeName.toLowerCase() == compare[cursor].value;
                             break;
                             case 'className':
                             found = node.className ? this.compareClassName(compare[cursor].value, node.className) : false;
@@ -2313,9 +2314,9 @@ var overtooning = {
                 return overtooning.create(node[cursor]);
             }
             return (path.current < path.tag.length) ? this.fetch(path, node, nolog? true : false) : node;
-        }   
+        }
     },
-    
+
     create: function () {
         switch(arguments.length) {
             case 1:
@@ -2339,7 +2340,7 @@ var overtooning = {
             }
         return A;
     },
-    
+
     compareClassName: function(className, splitNames) {
         if(splitNames.trim() == className.trim()) {
             return true;
@@ -2379,7 +2380,7 @@ var overtooning = {
             if(errback) errback({message: '[overtooning.cors] XmlHTTPRequest 2 not fully supported'});
         }
     },
-  
+
     MTime: function() {
         return Math.round(new Date().getTime() / 1000 / 60);
     }
